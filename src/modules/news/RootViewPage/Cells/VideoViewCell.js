@@ -46,7 +46,7 @@ export default class VideoViewCell extends Component {
                 source = {{url:item.chlsicon}}
                 style  = {styles.headerIcon} 
               />
-              <Text style = {styles.bottom_text1}>{item.source}</Text>
+              <Text style = {styles.bottom_text}>{item.source}</Text>
           </View>
       </View>
     );
@@ -80,16 +80,17 @@ const styles = StyleSheet.create({
     backgroundColor:  'transparent',
   },
   image: {
-     width: '100%', 
-     height: (312.0/660.0) * screenWidth ,
+     width:           '100%', 
+     height:          (312.0/660.0) * screenWidth ,
      backgroundColor: 'gray',
-     marginBottom: 5,
+     marginBottom:    5,
   },
   playImage:{
-    // postion: 'absolute',
+    position:  'absolute',
     alignSelf: 'center',
-    width:  42,
-    height: 42,
+    top:       ((312.0/660.0) * screenWidth - 42)/2.0,
+    width:     42,
+    height:    42,
   },
   headerIcon:{
     marginLeft:   15,
@@ -102,20 +103,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   samllerImage:{
-     width: (screenWidth - 20)/3.0, 
-     height: (130/196.0) * (screenWidth - 20)/3.0 ,
-     // backgroundColor: 'red',
+     width:        (screenWidth - 20)/3.0, 
+     height:       (130/196.0) * (screenWidth - 20)/3.0 ,
      marginBottom: 5,
-     marginRight: 2,
+     marginRight:  2,
   },
   bottom: {
    flexDirection: 'row',
-   alignItems: 'center',
-   marginBottom: 10,
+   alignItems:    'center',
+   marginBottom:  10,
   },
-  bottom_text1:{
+  bottom_text:{
     fontSize: 12,
-    color: '#2c2c2c',
+    color:    '#2c2c2c',
   },
 });
 

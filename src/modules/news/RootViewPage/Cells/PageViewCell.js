@@ -13,6 +13,7 @@ import {
   FlatList,
   Image,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 
 import NewsModel from '../Models/NewsModel'
@@ -26,8 +27,11 @@ export default class PageViewCell extends Component {
     this.state = {
     };
   }
-
-
+  _onPress = ()=>{
+    if (this.props.onPress) {
+      this.props.onPress(this.props.item)
+    }
+  }
   picShowType3(item){
     return <View style={styles.content}>
               <Text style = {styles.title}>{item.title}</Text>
@@ -81,13 +85,15 @@ export default class PageViewCell extends Component {
   }
   render() {
     const { item } = this.props
-    console.log(item.thumbnails[0]);
     return (
-      <View style = {styles.container}>
-        {item.picShowType == '3' ? this.picShowType3(item) : null}
-        {item.picShowType == '2' ? this.picShowType2(item) : null}
-        {item.picShowType == '0' ? this.picShowType0(item) : null}
-      </View>
+      <TouchableOpacity 
+        style = {styles.container}
+        onPress = {this._onPress}
+      >
+          {item.picShowType == '3' ? this.picShowType3(item) : null}
+          {item.picShowType == '2' ? this.picShowType2(item) : null}
+          {item.picShowType == '0' ? this.picShowType0(item) : null}
+      </TouchableOpacity>
     );
   }
 }

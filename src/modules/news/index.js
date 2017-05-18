@@ -30,8 +30,9 @@ export default class News extends Component {
   }
 
   render() {
+    const { navigation } = this.props;
     return (
-      <RootViewPage style={styles.container} />
+      <RootViewPage style={styles.container} navigation={navigation}/>
     );
   }
 }

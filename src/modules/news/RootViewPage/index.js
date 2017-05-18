@@ -28,23 +28,9 @@ export default class RootViewPage extends Component {
     this.state = {
     };
   }
-  static navigationOptions = ({navigation}) => {
-    return {
-      headerVisible: true,
-      header: (
-        <View style={{height: 64, backgroundColor: 'white'}}>
-          <View style={{flexDirection: 'row',top: 20,height: 44,alignItems:'center'}}>
-            {
-              ['新闻','视频','热点'].map((name,index) => {
-                return <Text key={index}> {name}</Text>
-              })
-            }
-          </View>
-        </View>
-      ),
-    }
-  }
+
   render() {
+    const { navigation } = this.props;
     return (
       <View style={styles.container}>
         <ScrollableTabView 
@@ -60,15 +46,17 @@ export default class RootViewPage extends Component {
                                             />
                                     }
         >
-            <NormalNewsPage tabLabel = "推荐" />
-            <VideoNewsPage  tabLabel = "视频" />
-            <VideoNewsPage  tabLabel = "热点" />
-            <VideoNewsPage  tabLabel = "直播" />
-            <VideoNewsPage  tabLabel = "深圳" />
-            <VideoNewsPage  tabLabel = "娱乐" />
-            <VideoNewsPage  tabLabel = "关注" />
-            <VideoNewsPage  tabLabel = "社会" />
-            <VideoNewsPage  tabLabel = "汽车" />
+            <NormalNewsPage  tabLabel = "推荐" navigation={navigation} />
+            <VideoNewsPage   tabLabel = "视频" navigation={navigation} />
+            <NormalNewsPage  tabLabel = "热点" navigation={navigation} />
+            <NormalNewsPage  tabLabel = "直播" navigation={navigation} />
+            <NormalNewsPage  tabLabel = "深圳" navigation={navigation} />
+            <NormalNewsPage  tabLabel = "娱乐" navigation={navigation} />
+            <NormalNewsPage  tabLabel = "关注" navigation={navigation} />
+            <NormalNewsPage  tabLabel = "社会" navigation={navigation} />
+            <NormalNewsPage  tabLabel = "汽车" navigation={navigation} />
+
+
         </ScrollableTabView>
       </View>
     );

@@ -19,7 +19,7 @@ import Attention   from '../modules/attention'
 import Video       from '../modules/video'
 import News        from '../modules/news'
 import Mine        from '../modules/mine'
-
+import WebViewPage from '../modules/news/RootViewPage/Pages/WebViewPage'
 
 const RouteConfigs = 
 {
@@ -82,7 +82,7 @@ const TabNavigatorConfig = {
       inactiveTintColor: '#2c2c2c', // 文字和图片未选中颜色
       showIcon:          true, // android 默认不显示 icon, 需要设置为 true 才会显示
       showLabel:         true,
-      lazy:              true,
+      // lazy:              true,
       swipeEnabled:      true,
       indicatorStyle:    {
         height: 0  // 如TabBar下面显示有一条线，可以设高度为0后隐藏
@@ -107,7 +107,8 @@ const TabNavigatorConfig = {
 const TabBars = TabNavigator(RouteConfigs,TabNavigatorConfig)
 
 const App = StackNavigator({
-    TabBars: { screen: TabBars },
+    TabBars:     { screen: TabBars },
+    WebViewPage: { screen: WebViewPage },
 },{
     headerMode:           'screen' ,
     mode:                 'card',

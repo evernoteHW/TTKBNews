@@ -15,6 +15,7 @@ import {
 
 import PageViewCell from '../Cells/PageViewCell'
 import NewsModel from '../Models/NewsModel'
+import WebViewPage from './WebViewPage'
 
 const newsJson = require('../../../../resource/json/news.json');
 
@@ -25,6 +26,7 @@ export default class NormalNewsPage extends Component {
       listData:   [],
       refreshing: false,
     };
+    // this._onPress.bind(this)
   }
   componentDidMount() {
     // this.loadLocalData()
@@ -39,7 +41,7 @@ export default class NormalNewsPage extends Component {
     this.setState({listData: localData})
   }
   loadNetWorkData(){
-
+    let url = this.differentURL(this.props.tabLabel)
     fetch('http://r.cnews.qq.com/getSubNewsInterest')
       .then((response) => response.json())
       .then((responseJson) => {
@@ -56,8 +58,26 @@ export default class NormalNewsPage extends Component {
     });
     
   }
+  differentURL(title){
+    switch(title){
+      case '推荐': return 'http://r.cnews.qq.com/getSubNewsInterest';
+      case '热点': return 'http://r.cnews.qq.com/getSubNewsInterest';
+      case '直播': return 'http://r.cnews.qq.com/getSubNewsInterest';
+      case '娱乐': return 'http://r.cnews.qq.com/getSubNewsInterest';
+      case '关注': return 'http://r.cnews.qq.com/getSubNewsInterest';
+      case '社会': return 'http://r.cnews.qq.com/getSubNewsInterest';
+      case '汽车': return 'http://r.cnews.qq.com/getSubNewsInterest';
+    }
+    return ''
+  }
+  _onPress(item){
+     const { navigate } = this.props.navigation;
+     navigate('WebViewPage',{surl:item.surl})
+  }
   _renderItem = ({item, index})=>{
-      return <PageViewCell key={index} item={item}/>
+      const {navigation} = this.props
+      // console.log(navigation);
+      return <PageViewCell key={index} item={item} onPress={this._onPress.bind(this)}/>
   }
   _itemSeparatorComponent(){
     return <View style={styles.seperator} />
@@ -72,7 +92,7 @@ export default class NormalNewsPage extends Component {
           <FlatList
             style                  = {{backgroundColor : 'white', width: '100%'}}
             data                   = {this.state.listData}
-            renderItem             = {this._renderItem}
+            renderItem             = {this._renderItem.bind(this)}
             ItemSeparatorComponent = {this._itemSeparatorComponent}
             refreshing             = {this.state.refreshing}
             onRefresh              = {this._onRefresh}

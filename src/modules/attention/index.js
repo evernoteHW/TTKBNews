@@ -41,7 +41,7 @@ export default class Attention extends Component {
     this.loadNetWorkData()
   }
   loadNetWorkData(){
-
+  
     fetch('http://r.cnews.qq.com/getMySubNewsDefault?appver=10.2_qnreading_3.1.0')
       .then((response) => response.json())
       .then((responseJson) => {
@@ -60,7 +60,6 @@ export default class Attention extends Component {
       .catch((error) => {
         console.error(error);
     });
-    
   }
  
   _exchange = () => {
@@ -75,7 +74,7 @@ export default class Attention extends Component {
         cureentIndex = 1  
       }
       let item = this.state.totalData[cureentIndex - 1];
-      localData.push({key: count, title: item.title})  
+      localData.push({key: count, title: item.title,subCount:item.subCount})  
 
       count++
        if (localData.length == 4) {

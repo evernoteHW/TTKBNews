@@ -15,6 +15,8 @@ import {
   SectionList,
   TouchableOpacity,
   Dimensions,
+  ScrollView,
+  SegmentedControlIOS,
 } from 'react-native';
 
 import PageViewCell from '../Cells/PageViewCell'
@@ -22,7 +24,7 @@ import NewsModel from '../Models/NewsModel'
 import WebViewPage from './WebViewPage'
 
 const screenWidth = Dimensions.get('window').width;
-var itemHeight = (screenWidth - 4*10)/4.0;
+var itemHeight = (screenWidth - 5*10)/4.0;
 export default class ChannelManagePage extends Component {
   constructor(props) {
     super(props);
@@ -44,6 +46,50 @@ export default class ChannelManagePage extends Component {
                       {key:'大学生'},
                       {key:'国际'},
                     ],
+      hotChannelData:[
+                      {key:'NBA'},
+                      {key:'体育'},
+                      {key:'军事'},
+                      {key:'财经'},
+                      {key:'科技'},
+                      {key:'快手'},
+                      {key:'GIF'},
+                      {key:'图片'},
+                      {key:'情感'},
+                      {key:'时尚'},
+                      {key:'房产'},
+                      {key:'历史'},
+                      {key:'萌宠'},
+                      {key:'养生'},
+                      {key:'星族'},
+                      {key:'电影'},
+                      {key:'育儿'},
+                      {key:'数码控'},
+                      {key:'政务'},
+                      {key:'男人装'},
+                    ],
+       cityChannelData:[
+                      {key:'NBA'},
+                      {key:'体育'},
+                      {key:'军事'},
+                      {key:'财经'},
+                      {key:'科技'},
+                      {key:'快手'},
+                      {key:'GIF'},
+                      {key:'图片'},
+                      {key:'情感'},
+                      {key:'时尚'},
+                      {key:'房产'},
+                      {key:'历史'},
+                      {key:'萌宠'},
+                      {key:'养生'},
+                      {key:'星族'},
+                      {key:'电影'},
+                      {key:'育儿'},
+                      {key:'数码控'},
+                      {key:'政务'},
+                      {key:'男人装'},
+                    ]
     };
 
   }
@@ -76,36 +122,45 @@ export default class ChannelManagePage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <FlatList
-          style      = {styles.flatList}
-          data       = {this.state.myChannelData}
-          numColumns = {4}
-          renderItem = {({item}) => 
-                              <TouchableOpacity style = {styles.flatList_item}>
-                                 <Text style = {styles.flatList_item_text}>{item.key}
-                                 </Text>
-                               </TouchableOpacity>
-                          }
+        <ScrollView  style = {styles.scrollView} >
+          <View style = {styles.contentContainer} >
+            <Text style = {styles.myChannelTip}>我的频道(拖动调整顺序)</Text>
+            {
+              //我自己的频道
+              this.state.myChannelData.map((item,index) => {
+                return <TouchableOpacity 
+                         style = {styles.flatList_item}
+                         key   = {index}
+                        >
+                         <Text style = {styles.flatList_item_text}>{item.key}
+                          </Text>
+                        </TouchableOpacity>
+              })
+            }
+            <Text style = {styles.myChannelTip}>热门频道(点击添加更多)</Text>
+            <View style = {styles.segmentedControlIOSBG}>
+                <SegmentedControlIOS 
+                  style         = {styles.segmentedControlIOS}
+                  tintColor     = '#d81e06'
+                  selectedIndex = {0}
+                  values        = {['频道', '城市']}
+                />
+            </View>
           
-          getItemLayout = {(data,index) => (
-             {length: itemHeight, offset: (itemHeight + 5) * index, index}
-          )}
-        />
-         <FlatList
-          style      = {styles.flatList}
-          data       = {this.state.myChannelData}
-          numColumns = {4}
-          renderItem = {({item}) => 
-                              <TouchableOpacity style = {styles.flatList_item}>
-                                 <Text style = {styles.flatList_item_text}>{item.key}
-                                 </Text>
-                               </TouchableOpacity>
-                          }
-          
-          getItemLayout = {(data,index) => (
-             {length: itemHeight, offset: (itemHeight + 5) * index, index}
-          )}
-        />
+            {
+              //我自己的频道
+              this.state.hotChannelData.map((item,index) => {
+                return <TouchableOpacity 
+                         style = {styles.flatList_item}
+                         key   = {index}
+                        >
+                         <Text style = {styles.flatList_item_text}>{item.key}
+                          </Text>
+                        </TouchableOpacity>
+              })
+            }
+          </View>
+        </ScrollView>
       </View>
     );
   }
@@ -114,6 +169,7 @@ export default class ChannelManagePage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    alignItems:       'flex-start',
     // justifyContent: 'center',
     // alignItems: 'center',
     backgroundColor: 'white',
@@ -143,27 +199,37 @@ const styles = StyleSheet.create({
     width:          44,
     height:         40,
   },
-  navigateBar_right_image:{
-    width:  20,
-    height: 20,
+  myChannelTip:{
+    color:        '#707070',
+    marginTop:    10,
+    marginBottom: 10,
+    marginLeft:   10,
+    width:        '100%',
   },
-
-  header_right_image:{
-    width : 15,
-    height: 15,
+  segmentedControlIOSBG:{
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    marginBottom: 10,
   },
-  flatList:{
-    // height: 300,
-    backgroundColor: 'orange',
+  segmentedControlIOS:{
+     width: 240,
+  },
+  scrollView:{
+    backgroundColor:  'white',
+  },
+  contentContainer:{
+    marginLeft:      5,
+    marginRight:     5,
+    // backgroundColor: 'yellow',
+    flexDirection:   'row',
+    flexWrap:        'wrap',
   },
   flatList_item:{
-    flexDirection:   'row',
     marginLeft:      5,
     marginRight:     5,
     marginTop:       5,
     marginBottom:    5,
-    justifyContent:  'center',
-    alignItems:      'center',
     height:          40,
     width:           itemHeight,
     justifyContent:  'center',
@@ -176,12 +242,7 @@ const styles = StyleSheet.create({
     fontSize:  14,
     textAlign: 'center',
   },
-  separator:{
-    marginLeft:      10,
-    marginRight:     10,
-    height:          0.5,
-    backgroundColor: 'rgb(244,245,247)',
-  },
+  //Header
   navigateBar:{
     height:          64, 
     backgroundColor: 'white'
@@ -211,37 +272,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color:    '#333333',
   },
-  attentionBtn:{
-    marginRight:     10,
-    justifyContent:  'center',
-    alignItems:      'center',
-    borderRadius:    3,
-    borderWidth:     0.5,
-    borderColor:     '#e0620d',
+  navigateBar_right_image:{
+    width:  20,
+    height: 20,
   },
-  attentionBtn_text:{
-    marginLeft:      15,
-    marginRight:     15,
-    marginBottom:    2.5,
-    marginTop:    2.5,
-    color:    '#e0620d',
-    fontSize: 13,
-  },
-  bottom:{
-    textAlign: 'center',
-    marginLeft:      20,
-    marginRight:     20,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  bottom_left_text: {
-    fontSize: 12,
-    color: '#2c2c2c',
-  },
-  bottom_right_text: {
-    fontSize:   12,
-    color:      '#1296db',
-  },
-
 });
 

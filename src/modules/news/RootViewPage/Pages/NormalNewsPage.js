@@ -30,7 +30,7 @@ export default class NormalNewsPage extends Component {
   }
   componentDidMount() {
     // this.loadLocalData()
-    this.loadNetWorkData()
+    // this.loadNetWorkData()
   }
   loadLocalData(){
     var localData = []
@@ -42,7 +42,11 @@ export default class NormalNewsPage extends Component {
   }
   loadNetWorkData(){
     let url = this.differentURL(this.props.tabLabel)
-    fetch('http://r.cnews.qq.com/getSubNewsInterest')
+    console.log(url);
+    fetch(url,{
+        method: 'POST',
+        body: 'cityList=深圳&uid=4A589D05-221D-45FC-AF60-5F2200A010B2&chlid=kb_news_pvp&last_id=&last_time=1495165135&userCity=深圳&adcode=440305&provinceId=19&forward=0&cityId=199&page=0&cachedCount=15',
+      })
       .then((response) => response.json())
       .then((responseJson) => {
          //写入数据库
@@ -61,7 +65,7 @@ export default class NormalNewsPage extends Component {
   differentURL(title){
     switch(title){
       case '推荐': return 'http://r.cnews.qq.com/getSubNewsInterest';
-      case '热点': return 'http://r.cnews.qq.com/getSubNewsInterest';
+      case '热点': return 'http://r.cnews.qq.com/getLiveNewsIndexAndItems';
       case '直播': return 'http://r.cnews.qq.com/getSubNewsInterest';
       case '娱乐': return 'http://r.cnews.qq.com/getSubNewsInterest';
       case '关注': return 'http://r.cnews.qq.com/getSubNewsInterest';
@@ -96,6 +100,7 @@ export default class NormalNewsPage extends Component {
             ItemSeparatorComponent = {this._itemSeparatorComponent}
             refreshing             = {this.state.refreshing}
             onRefresh              = {this._onRefresh}
+            removeClippedSubviews  = {false}
           />
       </View>
     );

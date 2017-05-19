@@ -52,7 +52,7 @@ export default class Attention extends Component {
     }
   }
   componentDidMount(){
-    this.loadNetWorkData()
+    // this.loadNetWorkData()
   }
   loadNetWorkData(){
   

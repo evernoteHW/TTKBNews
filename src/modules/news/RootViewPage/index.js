@@ -11,6 +11,8 @@ import {
   Text,
   View,
   FlatList,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 
 import NormalNewsPage from './Pages/NormalNewsPage'
@@ -42,12 +44,12 @@ export default class RootViewPage extends Component {
           initialPage             = {0}
           tabBarTextStyle         = {{marginTop: 20, fontSize: 15}}
           renderTabBar            = {() => <ScrollableTabBar 
-                                              style={{height: 60,borderWidth:1}} 
+                                              style={{height: 60,borderWidth:0,marginRight: 44}} 
                                             />
                                     }
         >
             <NormalNewsPage  tabLabel = "推荐" navigation={navigation} />
-            <VideoNewsPage   tabLabel = "视频" navigation={navigation} />
+            <VideoNewsPage   id = {10001} tabLabel = "视频" navigation={navigation} />
             <NormalNewsPage  tabLabel = "热点" navigation={navigation} />
             <NormalNewsPage  tabLabel = "直播" navigation={navigation} />
             <NormalNewsPage  tabLabel = "深圳" navigation={navigation} />
@@ -58,6 +60,15 @@ export default class RootViewPage extends Component {
 
 
         </ScrollableTabView>
+          <TouchableOpacity
+            style = {styles.navigateBar_right}
+            onPress = {()=> navigation.navigate('ChannelManagePage')}
+          >
+            <Image 
+              source = {require('../../../images/attention/attention_navigationbar_right.png')}
+              style  = {styles.navigateBar_right_image}
+            />
+        </TouchableOpacity>
       </View>
     );
   }
@@ -79,6 +90,21 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  navigateBar_right:{
+    justifyContent:  'center',
+    alignItems:      'center',
+    position:        'absolute',
+    top:             0,
+    right:           0,
+    width:           44,
+    height:          60,
+    backgroundColor: 'white',
+  },
+  navigateBar_right_image:{
+    marginTop: 10,
+    width:  20,
+    height: 20,
   },
 });
 

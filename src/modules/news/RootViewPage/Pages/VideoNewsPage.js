@@ -27,7 +27,7 @@ export default class VideoNewsPage extends Component {
     };
   }
   componentDidMount() {
-    this.loadLocalData()
+    // this.loadLocalData()
     // this.loadNetWorkData()
   }
   loadLocalData(){
@@ -38,22 +38,27 @@ export default class VideoNewsPage extends Component {
     }
     this.setState({listData: localData})
   }
+
   loadNetWorkData(){
 
-    // fetch('http://r.cnews.qq.com/getSubNewsInterest')
-    //   .then((response) => response.json())
-    //   .then((responseJson) => {
-    //      //写入数据库
-    //      var localData = []
-    //      for (var i = 0; i <= responseJson.newslist.length - 1; i++) {
-    //         let item = responseJson.newslist[i]
-    //         localData.push(new NewsModel(item))
-    //       }
-    //       this.setState({listData: localData,refreshing: false})
-    //   })
-    //   .catch((error) => {
-    //     console.error(error);
-    // });
+    let url = 'http://r.cnews.qq.com/getVideoCatInfo'
+    fetch(url,{
+      method: 'POST',
+      body: `kankaninfo={"num":10,"tag":{"id":"${this.props.id}","videonum":0,"name":"${this.props.tabLabel}"}}&page=0`
+    })
+      .then((response) => response.json())
+      .then((responseJson) => {
+          var localData = []
+          for (var i = 0; i <= responseJson.newslist.length - 1; i++) {
+            let item = responseJson.newslist[i]
+            localData.push(new VideoModel(item))
+          }
+          this.setState({listData: localData,refreshing: false})
+
+      })
+      .catch((error) => {
+        console.error(error);
+    });
     
   }
   _renderItem = ({item, index})=>{
@@ -74,6 +79,7 @@ export default class VideoNewsPage extends Component {
             data                   = {this.state.listData}
             renderItem             = {this._renderItem}
             ItemSeparatorComponent = {this._itemSeparatorComponent}
+            removeClippedSubviews  = {false}
             refreshing             = {this.state.refreshing}
             onRefresh              = {this._onRefresh}
           />
@@ -87,7 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
   seperator: {
     height: 10,

@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     // backgroundColor: 'orange'
   },
   header:{
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   separator:{
     height: 0.5,

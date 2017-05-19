@@ -25,10 +25,25 @@ export default class VideoRootViewPage extends Component {
     super(props);
   
     this.state = {
+      videoItemData: [
+                      {key: 10001,title: '搞笑'},
+                      {key: 10011,title: '音悦'},
+                      {key: 10005,title: '奇趣'},
+                      {key: 10006,title: '影视'},
+                      {key: 10009,title: '相声小品'},
+                      {key: 10007,title: '科技感'},
+                      {key: 10012,title: '游戏'},
+                      {key: 10004,title: '生活味'},
+                      {key: 10013,title: '时尚'},
+                      {key: 10002,title: '生活味'},
+                      {key: 10008,title: '动漫'},
+                      {key: 10010,title: '创意'},
+                     ]
     };
   }
 
   render() {
+
     const { navigation } = this.props;
     return (
       <View style={styles.container}>
@@ -45,14 +60,16 @@ export default class VideoRootViewPage extends Component {
                                             />
                                     }
         >
-            <VideoNewsPage   tabLabel = "视频" navigation={navigation} />
-            <VideoNewsPage  tabLabel = "热点" navigation={navigation} />
-            <VideoNewsPage  tabLabel = "直播" navigation={navigation} />
-            <VideoNewsPage  tabLabel = "深圳" navigation={navigation} />
-            <VideoNewsPage  tabLabel = "娱乐" navigation={navigation} />
-            <VideoNewsPage  tabLabel = "关注" navigation={navigation} />
-            <VideoNewsPage  tabLabel = "社会" navigation={navigation} />
-            <VideoNewsPage  tabLabel = "汽车" navigation={navigation} />
+        {
+            this.state.videoItemData.map((item,index) => {
+                return <VideoNewsPage  
+                        key        = {index} 
+                        id         = {item.key}
+                        tabLabel   = {item.title}
+                        navigation = {navigation} 
+                      />
+            })
+        }
         </ScrollableTabView>
       </View>
     );
@@ -64,7 +81,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
   welcome: {
     fontSize: 20,

@@ -20,7 +20,10 @@ import Video       from '../modules/video'
 import News        from '../modules/news'
 import Mine        from '../modules/mine'
 import WebViewPage from '../modules/news/RootViewPage/Pages/WebViewPage'
+import ChannelManagePage from '../modules/news/RootViewPage/Pages/ChannelManagePage'
+
 import AttentionTagPage from '../modules/attention/AttentionTagPage'
+
 
 const RouteConfigs = 
 {
@@ -108,9 +111,10 @@ const TabNavigatorConfig = {
 const TabBars = TabNavigator(RouteConfigs,TabNavigatorConfig)
 
 const App = StackNavigator({
-    TabBars:          { screen: TabBars },
-    WebViewPage:      { screen: WebViewPage },
-    AttentionTagPage: { screen: AttentionTagPage },
+    TabBars:           { screen: TabBars },
+    WebViewPage:       { screen: WebViewPage },
+    AttentionTagPage:  { screen: AttentionTagPage },
+    ChannelManagePage: { screen: ChannelManagePage},
 },{
     headerMode:           'screen' ,
     mode:                 'card',

@@ -39,7 +39,7 @@ export default class Login extends Component {
       <View style = {styles.container}>
         <View style = {styles.header}>
           <TouchableOpacity  style = {styles.leftCancelBg} onPress = {this._cancel}>
-            <Text style = {styles.cancel}> 取消</Text>
+            <Text style = {styles.cancel}>  取消</Text>
           </TouchableOpacity>
           <View style = {styles.headTitle}>
             <Text style = {styles.title}>登录</Text>
@@ -50,6 +50,7 @@ export default class Login extends Component {
             style = {styles.input} 
             placeholder = {'请输入手机号'}
           />
+          <View style = {styles.separator}/>
           <TextInput 
             style = {styles.input} 
             placeholder = {'请输入验证码'}
@@ -73,23 +74,23 @@ const styles = StyleSheet.create({
   },
   leftCancelBg:{
     justifyContent:  'center',
-    alignItems:      'center',
+    // alignItems:      'center',
     position:        'absolute',
     width:           60,
     height:          30,
-    left:            15,
-    top:             20,
-    marginTop:       7,
+    left:            7,
+    top:             27,
     // backgroundColor: 'orange',
   },
   cancel:{
-    textAlign:       'center',
+    // textAlign:       'center',
     color:           '#1296db',
     backgroundColor: 'transparent',
   },
   title:{
-    color:    '#333333',
-    fontSize: 16,
+    color:           '#333333',
+    fontSize:        16,
+    backgroundColor: 'transparent',
   },
   headTitle:{
     alignItems:      'center',
@@ -103,6 +104,12 @@ const styles = StyleSheet.create({
   },
   header:{
     backgroundColor: 'white'
+  },
+  separator:{
+    height: 0.5,
+    marginLeft: 5,
+    marginRight: 5,
+    backgroundColor: 'rgb(242,242,242)',
   },
   input:{
     marginLeft: 10,

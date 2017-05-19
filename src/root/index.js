@@ -20,13 +20,14 @@ import Video       from '../modules/video'
 import News        from '../modules/news'
 import Mine        from '../modules/mine'
 import WebViewPage from '../modules/news/RootViewPage/Pages/WebViewPage'
+import AttentionTagPage from '../modules/attention/AttentionTagPage'
 
 const RouteConfigs = 
 {
     News: {
       screen:            News,
       navigationOptions: {
-        tabBarLabel: '关注',
+        tabBarLabel: '快报',
         tabBarIcon: ({focused,tintColor}) => (
           <Image 
             source = {focused ? require('../images/tab/scr_root_news_selected.png'): require('../images/tab/scr_root_news_normal.png')}
@@ -50,7 +51,7 @@ const RouteConfigs =
     Attention: {
       screen:            Attention,
       navigationOptions: {
-        tabBarLabel: '快报',
+        tabBarLabel: '关注',
         tabBarIcon: ({focused,tintColor}) => (
           <Image 
             source = {focused ? require('../images/tab/scr_root_attention_selected.png'): require('../images/tab/scr_root_attention_normal.png')}
@@ -107,8 +108,9 @@ const TabNavigatorConfig = {
 const TabBars = TabNavigator(RouteConfigs,TabNavigatorConfig)
 
 const App = StackNavigator({
-    TabBars:     { screen: TabBars },
-    WebViewPage: { screen: WebViewPage },
+    TabBars:          { screen: TabBars },
+    WebViewPage:      { screen: WebViewPage },
+    AttentionTagPage: { screen: AttentionTagPage },
 },{
     headerMode:           'screen' ,
     mode:                 'card',

@@ -159,7 +159,7 @@ export default class Mine extends Component {
         return (
           <View style={styles.container}>
             <SectionList 
-                style                     = {[{backgroundColor: 'rgb(242,242,242)', width: '100%'},{}]}
+                style                     = {styles.sectionList}
                 sections                  = {this.state.listData}
                 renderItem                = {this.renderItem}
                 keyExtractor              = {(item,index) => `${index}`}
@@ -189,7 +189,11 @@ const styles = StyleSheet.create({
   container: {
     flex:            1,
     // flexDirection:  'row',
-    backgroundColor: 'rgb(247,247,242)',
+    backgroundColor: 'rgb(244,245,247)',
+  },
+  sectionList:{
+    backgroundColor: 'rgb(244,245,247)', 
+    width: '100%',
   },
   contentContainer: {
     // position:           'absoulute',

@@ -13,18 +13,23 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
+  Modal,
 } from 'react-native';
 
-
 var ScrollableTabView = require('react-native-scrollable-tab-view');
-
+import Login from '../login'
 
 export default class Attention extends Component {
     
     constructor(props) {
       super(props);
       
-      this.state = { listData:[] ,totalData: [], cureentIndex: 0};
+      this.state = { 
+          listData:     [] ,
+          totalData:    [], 
+          cureentIndex: 0,
+          modalVisible: false,
+        };
     }
     static navigationOptions = ({navigation}) => {
       return {
@@ -33,6 +38,15 @@ export default class Attention extends Component {
             <View style = {styles.titleView}>
              <Text style = {styles.headerText}>我的关注</Text>
             </View>
+            <TouchableOpacity
+              style = {styles.navigateBar_right}
+              onPress = {()=> navigation.navigate('AttentionTagPage')}
+            >
+              <Image 
+                source = {require('../../images/attention/attention_navigationbar_right.png')}
+                style  = {styles.navigateBar_right_image}
+              />
+            </TouchableOpacity>
           </View>
         ),
     }
@@ -61,7 +75,12 @@ export default class Attention extends Component {
         console.error(error);
     });
   }
- 
+  _cancel(){
+    this.setState({modalVisible: false})
+  }
+  _login(){
+   this.setState({modalVisible: false}) 
+  }
   _exchange = () => {
     var localData = []
     var count = 0
@@ -135,8 +154,25 @@ export default class Attention extends Component {
           </TouchableOpacity>
           <Text style = {styles.bottom}>
             <Text style = {styles.bottom_left_text}>已有关注</Text>
-            <Text style = {styles.bottom_right_text}>  请登录</Text>
+            <Text 
+              style = {styles.bottom_right_text}
+              onPress = {() => this.setState({modalVisible: true})}
+            >  请登录
+            </Text>
           </Text>
+
+          <Modal
+            animationType  = {'slide'}
+            transparent    = {false}
+            visible        = {this.state.modalVisible}
+            onRequestClose = {() => {alert("Modal has been closed.")}}
+          >
+            <Login 
+              cancel = {this._cancel.bind(this)} 
+              login  = {this._login.bind(this)}
+            />
+          </Modal>
+
       </View>
     );
   }
@@ -161,6 +197,19 @@ const styles = StyleSheet.create({
     marginLeft:  20,
     marginRight: 20,
     height:      220,
+  },
+  navigateBar_right:{
+    justifyContent:  'center',
+    alignItems:      'center',
+    position:        'absolute',
+    top:             27,
+    right:           7,
+    width:           60,
+    height:          30,
+  },
+  navigateBar_right_image:{
+    width:  20,
+    height: 20,
   },
   header_right:{
     flexDirection: 'row',

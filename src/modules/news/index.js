@@ -13,7 +13,7 @@ import {
   FlatList,
 } from 'react-native';
 
-import RootViewPage from './/RootViewPage'
+import RootViewPage from './RootViewPage'
 
 
 export default class News extends Component {

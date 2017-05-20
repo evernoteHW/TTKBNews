@@ -69,27 +69,22 @@ export default class ChannelManagePage extends Component {
                       {key:'男人装'},
                     ],
        cityChannelData:[
-                      {key:'NBA'},
-                      {key:'体育'},
-                      {key:'军事'},
-                      {key:'财经'},
-                      {key:'科技'},
-                      {key:'快手'},
-                      {key:'GIF'},
-                      {key:'图片'},
-                      {key:'情感'},
-                      {key:'时尚'},
-                      {key:'房产'},
-                      {key:'历史'},
-                      {key:'萌宠'},
-                      {key:'养生'},
-                      {key:'星族'},
-                      {key:'电影'},
-                      {key:'育儿'},
-                      {key:'数码控'},
-                      {key:'政务'},
-                      {key:'男人装'},
-                    ]
+                      {key:'北京'},
+                      {key:'上海'},
+                      {key:'重庆'},
+                      {key:'西安'},
+                      {key:'广州'},
+                      {key:'成都'},
+                      {key:'郑州'},
+                      {key:'武汉'},
+                      {key:'石家庄'},
+                      {key:'杭州'},
+                      {key:'苏州'},
+                      {key:'南京'},
+                      {key:'昆明'},
+                      {key:'济南'},
+                    ],
+        selectedTapIndex: 0,                    
     };
 
   }
@@ -120,6 +115,9 @@ export default class ChannelManagePage extends Component {
   }
   
   render() {
+    const { navigate }  = this.props.navigation
+    let itemData = this.state.selectedTapIndex ==0 ? this.state.hotChannelData : this.state.cityChannelData
+    let bottomBtnText = this.state.selectedTapIndex ==0 ? '更多频道' : '全部城市'
     return (
       <View style={styles.container}>
         <ScrollView  style = {styles.scrollView} >
@@ -134,7 +132,7 @@ export default class ChannelManagePage extends Component {
                         >
                          <Text style = {styles.flatList_item_text}>{item.key}
                           </Text>
-                        </TouchableOpacity>
+                       </TouchableOpacity>
               })
             }
             <Text style = {styles.myChannelTip}>热门频道(点击添加更多)</Text>
@@ -144,22 +142,27 @@ export default class ChannelManagePage extends Component {
                   tintColor     = '#d81e06'
                   selectedIndex = {0}
                   values        = {['频道', '城市']}
+                  onValueChange = {(index) => console.log(`index = ${index}`)}
+                  onChange      = {(e)     => this.setState({selectedTapIndex: e.nativeEvent.selectedSegmentIndex})}
                 />
             </View>
-          
             {
               //我自己的频道
-              this.state.hotChannelData.map((item,index) => {
+              itemData.map((item,index) => {
                 return <TouchableOpacity 
                          style = {styles.flatList_item}
                          key   = {index}
                         >
-                         <Text style = {styles.flatList_item_text}>{item.key}
-                          </Text>
+                         <Text 
+                          style = {styles.flatList_item_text}>{item.key}
+                         </Text>
                         </TouchableOpacity>
               })
             }
           </View>
+          <TouchableOpacity style = {styles.allCity} onPress = {() => navigate('MoreChannelCityPage')}>
+            <Text style = {styles.allCity_text}>{bottomBtnText}</Text>
+          </TouchableOpacity>
         </ScrollView>
       </View>
     );
@@ -180,6 +183,22 @@ const styles = StyleSheet.create({
     marginBottom:   20,
     flexDirection:  'row',
     justifyContent: 'space-between'
+  },
+  allCity:{
+    marginLeft:      5,
+    marginRight:     5,
+    marginTop:       15,
+    marginBottom:    15,
+    height:          40,
+    justifyContent:  'center',
+    alignItems:      'center',
+    backgroundColor: 'rgb(244,245,247)',
+    borderRadius:    3,
+  },
+  allCity_text:{
+    color:     '#d81e06',
+    fontSize:  16,
+    textAlign: 'center',
   },
   navigateBar_left:{
     justifyContent: 'center',

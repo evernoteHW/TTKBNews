@@ -21,7 +21,7 @@ import News        from '../modules/news'
 import Mine        from '../modules/mine'
 import WebViewPage from '../modules/news/RootViewPage/Pages/WebViewPage'
 import ChannelManagePage from '../modules/news/RootViewPage/Pages/ChannelManagePage'
-
+import MoreChannelCityPage from '../modules/news/RootViewPage/Pages/MoreChannelCityPage'
 import AttentionTagPage from '../modules/attention/AttentionTagPage'
 
 
@@ -111,10 +111,11 @@ const TabNavigatorConfig = {
 const TabBars = TabNavigator(RouteConfigs,TabNavigatorConfig)
 
 const App = StackNavigator({
-    TabBars:           { screen: TabBars },
-    WebViewPage:       { screen: WebViewPage },
-    AttentionTagPage:  { screen: AttentionTagPage },
-    ChannelManagePage: { screen: ChannelManagePage},
+    TabBars:             { screen: TabBars },
+    WebViewPage:         { screen: WebViewPage },
+    AttentionTagPage:    { screen: AttentionTagPage },
+    ChannelManagePage:   { screen: ChannelManagePage},
+    MoreChannelCityPage: { screen: MoreChannelCityPage},
 },{
     headerMode:           'screen' ,
     mode:                 'card',

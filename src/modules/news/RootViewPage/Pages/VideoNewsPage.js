@@ -28,7 +28,7 @@ export default class VideoNewsPage extends Component {
   }
   componentDidMount() {
     // this.loadLocalData()
-    // this.loadNetWorkData()
+    this.loadNetWorkData()
   }
   loadLocalData(){
     var localData = []

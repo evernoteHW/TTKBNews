@@ -16,6 +16,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+
+
 import NewsModel from '../Models/NewsModel'
 
 const screenWidth = Dimensions.get('window').width
@@ -32,6 +34,8 @@ export default class PageViewCell extends Component {
       this.props.onPress(this.props.item)
     }
   }
+  
+
   picShowType3(item){
     return <View style={styles.content}>
               <Text style = {styles.title}>{item.title}</Text>

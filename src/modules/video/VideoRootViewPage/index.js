@@ -18,7 +18,7 @@ import VideoNewsPage from '../../news/RootViewPage/Pages/VideoNewsPage'
 import ScrollableTabView, { ScrollableTabBar, } from 'react-native-scrollable-tab-view';
 
 import DefaultTabBar from '../../news/RootViewPage/Pages/DefaultTabBar'
-
+import Video from 'react-native-video'
 
 export default class VideoRootViewPage extends Component {
   constructor(props) {
@@ -41,7 +41,8 @@ export default class VideoRootViewPage extends Component {
                      ]
     };
   }
-
+  componentDidMount(){
+  }
   render() {
 
     const { navigation } = this.props;

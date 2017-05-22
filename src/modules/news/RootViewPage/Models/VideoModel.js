@@ -36,5 +36,6 @@ export default function VideoModel(item){
 	this.uin               = item.uin;
 	this.url               = item.url;
 	this.zhibo_vid         = item.zhibo_vid;
+	this.play_url          = 'https://www.quirksmode.org/html5/videos/big_buck_bunny.mp4'
 	
 }

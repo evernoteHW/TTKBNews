@@ -150,7 +150,7 @@ export default class ChannelManagePage extends Component {
                   onChange      = {(e)     => this.setState({selectedTapIndex: e.nativeEvent.selectedSegmentIndex})}
                 />
             </View>
-            <View ref = {(component) => this.downScrollViewContainer = component} style = {styles.contentContainer}>
+            <View ref = {(component) => this.downScrollViewContainer = component} style = {styles.downContentContainer}>
             {
               //我自己的频道
               itemData.map((item,index) => {
@@ -158,7 +158,6 @@ export default class ChannelManagePage extends Component {
                           key                   = {index}
                           onPanResponderGrant   = {() => this.setState({scroll: false})}
                           onPanResponderRelease = {() => {
-                            console.log('123123');
                             for (let component in this.downScrollViewContainer.props.children){
 
                             }
@@ -253,6 +252,10 @@ const styles = StyleSheet.create({
   },
   scrollView:{
     backgroundColor:  'white',
+  },
+  downContentContainer:{
+    flexDirection:   'row',
+    flexWrap:        'wrap',
   },
   contentContainer:{
     marginLeft:      5,

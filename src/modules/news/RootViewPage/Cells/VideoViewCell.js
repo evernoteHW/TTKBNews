@@ -13,9 +13,11 @@ import {
   FlatList,
   Image,
   Dimensions,
+  TouchableOpacity,
 } from 'react-native';
 
 import NewsModel from '../Models/NewsModel'
+import Video from 'react-native-video'
 
 const screenWidth = Dimensions.get('window').width
 const screenHeight = Dimensions.get('window').height
@@ -24,11 +26,37 @@ export default class VideoViewCell extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isPlaying: false,
     };
   }
- 
+  componentDidMount(){
+    // this.player.seek(0)
+  }
+  loadStart(e){
+    console.log('视频开始加载');
+  }
+  setDuration(e){
+    console.log('视频加载完成，即将播放');
+  }
+  setTime(e){
+    console.log('setTime');
+  }
+  onEnd(e){
+    console.log('视频播放完成');
+  }
+  videoError(e){
+    console.log('视频播放出错');
+  }
+  _playVideo(item){
+    //播放视频
+    this.setState({isPlaying: true})
+  }
+  test(){
+    return <Text>123213123</Text>
+  }
   render() {
     const { item } = this.props
+    let isPlaying = this.state.isPlaying
     return (
       <View style = {styles.container}>
           <Image
@@ -36,10 +64,15 @@ export default class VideoViewCell extends Component {
             style  = {styles.image}
           >
             <Text style={styles.title}>{item.title}</Text>
-            <Image 
-              source = {require('../../../../images/video/scr_video_play.png')}
-              style  = {styles.playImage}
-            />
+            <TouchableOpacity 
+              style   = {styles.playImage_bg}
+              onPress = {this._playVideo(item)}
+            >
+                <Image 
+                  source = {require('../../../../images/video/scr_video_play.png')}
+                  style  = {styles.playImage}
+                />
+            </TouchableOpacity>
           </Image>
           <View style = {styles.bottom}>
               <Image
@@ -48,6 +81,10 @@ export default class VideoViewCell extends Component {
               />
               <Text style = {styles.bottom_text}>{item.source}</Text>
           </View>
+          {
+            this.test()
+            // isPlaying ? null : null
+          }
       </View>
     );
   }
@@ -85,10 +122,12 @@ const styles = StyleSheet.create({
      backgroundColor: 'gray',
      marginBottom:    5,
   },
-  playImage:{
+  playImage_bg:{
     position:  'absolute',
     alignSelf: 'center',
     top:       ((312.0/660.0) * screenWidth - 42)/2.0,
+  },
+  playImage:{
     width:     42,
     height:    42,
   },
@@ -116,6 +155,14 @@ const styles = StyleSheet.create({
   bottom_text:{
     fontSize: 12,
     color:    '#2c2c2c',
+  },
+  backgroundVideo:{
+    position:'absolute',
+    top:0,
+    left:0,
+    height:100,
+    right:0,
+    backgroundColor: 'orange',
   },
 });
 

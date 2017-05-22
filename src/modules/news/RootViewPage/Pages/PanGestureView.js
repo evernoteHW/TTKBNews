@@ -55,6 +55,7 @@ export default class PanGestureView extends Component {
           if (this.props.onPanResponderRelease) {
               this.props.onPanResponderRelease()
           }
+          console.log(`pageX = ${e.nativeEvent.pageX} pageY = ${e.nativeEvent.pageY}`);
           this.setState({zIndex: 0})
           //回到自己位置
           Animated.spring(this.state.pan, {
@@ -81,6 +82,7 @@ export default class PanGestureView extends Component {
   render() {
     return (
         <Animated.View 
+          onLayout = {(e) => {console.log(`x = ${e.nativeEvent.layout.x} y = ${e.nativeEvent.layout.y}`)}}
         	style = {[
               this.props.style,
               {

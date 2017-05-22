@@ -30,7 +30,7 @@ export default class NormalNewsPage extends Component {
   }
   componentDidMount() {
     // this.loadLocalData()
-    this.loadNetWorkData()
+    // this.loadNetWorkData()
   }
   loadLocalData(){
     var localData = []

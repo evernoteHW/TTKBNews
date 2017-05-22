@@ -70,7 +70,7 @@ export default class Login extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'rgb(242,242,242)'
+    backgroundColor: 'rgb(244,245,247)'
   },
   leftCancelBg:{
     justifyContent:  'center',

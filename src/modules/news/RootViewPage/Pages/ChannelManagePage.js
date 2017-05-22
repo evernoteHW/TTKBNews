@@ -22,6 +22,7 @@ import {
 import PageViewCell from '../Cells/PageViewCell'
 import NewsModel from '../Models/NewsModel'
 import WebViewPage from './WebViewPage'
+import PanGestureView from './PanGestureView'
 
 const screenWidth = Dimensions.get('window').width;
 var itemHeight = (screenWidth - 5*10)/4.0;
@@ -68,7 +69,7 @@ export default class ChannelManagePage extends Component {
                       {key:'政务'},
                       {key:'男人装'},
                     ],
-       cityChannelData:[
+       cityChannelData: [
                       {key:'北京'},
                       {key:'上海'},
                       {key:'重庆'},
@@ -84,7 +85,8 @@ export default class ChannelManagePage extends Component {
                       {key:'昆明'},
                       {key:'济南'},
                     ],
-        selectedTapIndex: 0,                    
+        selectedTapIndex: 0,                 
+        scroll:           true,   
     };
 
   }
@@ -120,8 +122,10 @@ export default class ChannelManagePage extends Component {
     let bottomBtnText = this.state.selectedTapIndex ==0 ? '更多频道' : '全部城市'
     return (
       <View style={styles.container}>
-        <ScrollView  style = {styles.scrollView} >
-          <View style = {styles.contentContainer} >
+        <ScrollView  style = {styles.scrollView} scrollEnabled = {this.state.scroll}>
+          <View 
+            ref = {(component) => this.scrollViewContainer = component}
+            style = {styles.contentContainer} >
             <Text style = {styles.myChannelTip}>我的频道(拖动调整顺序)</Text>
             {
               //我自己的频道
@@ -142,23 +146,36 @@ export default class ChannelManagePage extends Component {
                   tintColor     = '#d81e06'
                   selectedIndex = {0}
                   values        = {['频道', '城市']}
-                  onValueChange = {(index) => console.log(`index = ${index}`)}
+                  // onValueChange = {(index) => console.log(`index = ${index}`)}
                   onChange      = {(e)     => this.setState({selectedTapIndex: e.nativeEvent.selectedSegmentIndex})}
                 />
             </View>
+            <View ref = {(component) => this.downScrollViewContainer = component} style = {styles.contentContainer}>
             {
               //我自己的频道
               itemData.map((item,index) => {
-                return <TouchableOpacity 
-                         style = {styles.flatList_item}
-                         key   = {index}
+                return  <PanGestureView 
+                          key                   = {index}
+                          onPanResponderGrant   = {() => this.setState({scroll: false})}
+                          onPanResponderRelease = {() => {
+                            console.log('123123');
+                            for (let component in this.downScrollViewContainer.props.children){
+
+                            }
+                            this.setState({scroll: true})
+                          }}
                         >
-                         <Text 
-                          style = {styles.flatList_item_text}>{item.key}
-                         </Text>
-                        </TouchableOpacity>
+                            <TouchableOpacity 
+                             style = {styles.flatList_item}
+                            >
+                             <Text 
+                              style = {styles.flatList_item_text}>{item.key}
+                             </Text>
+                            </TouchableOpacity>
+                        </PanGestureView>
               })
             }
+            </View>
           </View>
           <TouchableOpacity style = {styles.allCity} onPress = {() => navigate('MoreChannelCityPage')}>
             <Text style = {styles.allCity_text}>{bottomBtnText}</Text>

@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 
 import NewsModel from '../Models/NewsModel'
-import Video from 'react-native-video'
+// import Video from 'react-native-video'
 
 const screenWidth = Dimensions.get('window').width
 const screenHeight = Dimensions.get('window').height

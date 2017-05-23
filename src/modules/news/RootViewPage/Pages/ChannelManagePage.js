@@ -115,16 +115,62 @@ export default class ChannelManagePage extends Component {
   componentDidMount() {
 
   }
-  
+  onPanResponderRelease = (index,moveBehindPoint,callback) => {
+      console.log(index);
+      
+      var count = 0
+      var isInside = false
+      var replaceIndex = index
+      for (var key in this.downScrollViewContainer.props.children){
+          let frame = this.refs[`PanGestureView_${count}`].getFrame()
+          if (count != index) {
+            if(this.pointInRect(moveBehindPoint,frame)){
+              isInside = true
+              replaceIndex = count
+            }
+          }
+          count ++;
+      }
+      //需要更换的index 
+      //遍历 进行替换
+      console.log(isInside);
+      if (isInside) {
+        let frame_0 = this.refs[`PanGestureView_${index}`].getFrame()
+        let frame_1 = this.refs[`PanGestureView_${replaceIndex}`].getFrame()
+        let move_length = frame_1.x - frame_0.x
+        console.log(`move_length == ${move_length}`);
+        this.refs[`PanGestureView_${index}`].startAnimation(move_length,0,() => {
+          this.setState({scroll: true})
+        })
+        this.refs[`PanGestureView_${replaceIndex}`].startAnimation(-move_length,0,() => {
+          this.setState({scroll: true})
+        })
+      }else{
+        this.refs[`PanGestureView_${index}`].startAnimation(0,0,() => {
+          this.setState({scroll: true})
+        })
+      }
+  }
+
+  pointInRect(point,frame){
+
+    if (point.x >= frame.x && 
+        point.x <= frame.x + frame.width &&
+        point.y >= frame.y && 
+        point.y <= frame.y + frame.height) {
+      return true
+    }
+    return false
+  }
   render() {
-    const { navigate }  = this.props.navigation
-    let itemData = this.state.selectedTapIndex ==0 ? this.state.hotChannelData : this.state.cityChannelData
-    let bottomBtnText = this.state.selectedTapIndex ==0 ? '更多频道' : '全部城市'
+    const { navigate } = this.props.navigation
+    let itemData       = this.state.selectedTapIndex == 0 ? this.state.hotChannelData : this.state.cityChannelData
+    let bottomBtnText  = this.state.selectedTapIndex == 0 ? '更多频道' : '全部城市'
     return (
       <View style={styles.container}>
         <ScrollView  style = {styles.scrollView} scrollEnabled = {this.state.scroll}>
           <View 
-            ref = {(component) => this.scrollViewContainer = component}
+            ref   = {(component) => this.scrollViewContainer = component}
             style = {styles.contentContainer} >
             <Text style = {styles.myChannelTip}>我的频道(拖动调整顺序)</Text>
             {
@@ -154,15 +200,12 @@ export default class ChannelManagePage extends Component {
             {
               //我自己的频道
               itemData.map((item,index) => {
-                return  <PanGestureView 
+                return  <PanGestureView
+                          index                 = {index}
+                          ref                   = {`PanGestureView_${index}`}
                           key                   = {index}
                           onPanResponderGrant   = {() => this.setState({scroll: false})}
-                          onPanResponderRelease = {() => {
-                            for (let component in this.downScrollViewContainer.props.children){
-
-                            }
-                            this.setState({scroll: true})
-                          }}
+                          onPanResponderRelease = {this.onPanResponderRelease}
                         >
                             <TouchableOpacity 
                              style = {styles.flatList_item}

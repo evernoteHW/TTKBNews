@@ -16,15 +16,57 @@ import {
 
 var SQUARE_DIMENSIONS = 100;
 
-export default class PanGestureView extends Component {
 
+function Point(x, y) {
+  this.x = x;
+  this.y = y;
+}
+
+function Rect(x, y, width, height) {
+  this.x = x;
+  this.y = y;
+  this.width = width;
+  this.height = height;
+}
+
+export default class PanGestureView extends Component {
+  
   constructor(props) {
     super(props);
-  
+
     this.state = {
-    	 pan: new Animated.ValueXY(),
+    	 pan:    new Animated.ValueXY(),
+       top:    new Animated.Value(0),
+       left:    new Animated.Value(0),
        zIndex: 0,
+       frame:  {},
     };
+  }
+  shouldComponentUpdate(nextProps,nextState){
+    // console.log(`nextProps = ${nextProps}`);
+    // console.log(`nextState = ${nextState}`);
+    return true
+  }
+  startAnimation(x_toValue,y_toValue,doneCallBack){
+      Animated.parallel([
+        Animated.spring(this.state.pan.x, {
+          toValue: x_toValue
+        }),
+        Animated.spring(this.state.pan.y, {
+          toValue: y_toValue
+        }),
+      ])
+      .start(() => {
+        this.setState({zIndex: 0})
+        doneCallBack()
+      });
+    
+      this.state.pan.flattenOffset();
+  }
+  resetAnimation(){
+    Animated.spring(this.state.pan, {
+      toValue: 0
+    }).start(() => {this.setState({zIndex: 0})})
   }
   componentWillMount() {
       this._animatedValueX = 0;
@@ -44,7 +86,7 @@ export default class PanGestureView extends Component {
           if (this.props.onPanResponderGrant) {
               this.props.onPanResponderGrant()
           }
-          this.setState({zIndex: 1})
+          this.setState({zIndex: 10})
 	        this.state.pan.setOffset({x: this._animatedValueX, y: this._animatedValueY});
 	        this.state.pan.setValue({x:  0, y: 0}); //Initial value
 	      },
@@ -52,37 +94,31 @@ export default class PanGestureView extends Component {
 	        null, {dx: this.state.pan.x, dy: this.state.pan.y}
 	      ]), // Creates a function to handle the movement and set offsets
 	      onPanResponderRelease: (e, gestureState) => {
+          let x =  this.state.frame.x + this.state.frame.width/2.0 + this._animatedValueX
+          let y =  this.state.frame.y + this.state.frame.height/2.0 + this._animatedValueY
           if (this.props.onPanResponderRelease) {
-              this.props.onPanResponderRelease()
+              this.props.onPanResponderRelease(this.props.index,{x,y})
           }
-          console.log(`pageX = ${e.nativeEvent.pageX} pageY = ${e.nativeEvent.pageY}`);
-          this.setState({zIndex: 0})
-          //回到自己位置
-          Animated.spring(this.state.pan, {
-            toValue: 0
-          }).start();
           this.state.pan.flattenOffset();
 	      },
 	  });
-  }
-   flattenOffset = () =>{
-   	console.log(88888);
-   	 Animated.spring(this.state.pan, {
-      toValue: 0
-    }).start();
-   	// console.log(this._value);
-   	// console.log(this._offset);
-    // this._value += this._offset;
-    // this._offset = 0;
   }
   componentWillUnmount() {
     this.state.pan.x.removeAllListeners();  
     this.state.pan.y.removeAllListeners();
   }
+  getFrame(){
+    return this.state.frame;
+  }
   render() {
     return (
         <Animated.View 
-          onLayout = {(e) => {console.log(`x = ${e.nativeEvent.layout.x} y = ${e.nativeEvent.layout.y}`)}}
+          ref      = {(component) => this.panGesture = component}
+          onLayout = {(e)    => {
+            const {x ,y , width ,height } = e.nativeEvent.layout
+              this.setState({frame: {x: x,y :y,width: width,height: height}});
+            }
+          }
         	style = {[
               this.props.style,
               {
@@ -97,6 +133,10 @@ export default class PanGestureView extends Component {
               },
               {
                 zIndex:  this.state.zIndex
+              },
+              {
+                top:  this.state.top,
+                left: this.state.left,
               }
             ]
         	}
@@ -107,7 +147,17 @@ export default class PanGestureView extends Component {
     );
   }
 }
-
+PanGestureView.defaultProps = {
+  frame:    new Rect(0, 0, 0, 0),
+  orign_x:  0,
+  orign_y:  0,
+  orign:    new Point(0,0),
+  getFrame: () => {},
+}
+PanGestureView.propTypes = {
+  getFrame: React.PropTypes.func,
+  orign_x: React.PropTypes.number
+}
 const styles = StyleSheet.create({
 
 

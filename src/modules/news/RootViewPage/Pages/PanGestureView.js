@@ -32,6 +32,11 @@ function Rect(x, y, width, height) {
 const commonConfig = {
   duration: 3000,
   // Easing.out(Easing.back()) : Easing.inOut(Easing.quad),
+  easing:   Easing.out(Easing.quad)
+}
+const commonConfig2 = {
+  duration: 3000,
+  // Easing.out(Easing.back()) : Easing.inOut(Easing.quad),
   easing:   Easing.inOut(Easing.quad)
 }
 export default class PanGestureView extends Component {
@@ -86,12 +91,16 @@ export default class PanGestureView extends Component {
   }
   startAnimation2(move_dx,move_dy,doneCallBack,a,b){
       //移动距离
-     // console.log(a,b);
+      //中心点....
+     console.log(a,b)
+
+     // console.log(a - this.state.frame.width/2.0,b - this.state.frame.height/2.0);
       //设定初始值
       // console.log(this._animatedValueX - this.state.frame.x,this._animatedValueY - this.state.frame.y);
       // this.state.pan.setValue({x: this._animatedValueX - this.state.frame.x, y: this._animatedValueY - this.state.frame.y}); //Initial value
       // this.state.pan.setOffset({x: 100, y: 100});
-      // this.state.pan.setValue({x: 91.5, y: this._animatedValueY});
+      this.state.pan.setOffset({x: this._animatedValueX, y: this._animatedValueY});
+      this.state.pan.setValue({x: 91.5, y: 0});
       // this.state.pan.setOffset({x: this._animatedValueX, y: this._animatedValueY});
       // this.state.pan.setValue({x: this._animatedValueX, y: this._animatedValueY}); //Initial value
       // this.state.pan.setValue({x:this._animatedValueX - this.state.frame.width, y: this._animatedValueY - this.state.frame.height}); //Initial value
@@ -102,17 +111,17 @@ export default class PanGestureView extends Component {
       //不应该。。。卧槽
       console.log(`this._animatedValueX = ${this._animatedValueX} this._animatedValueY = ${this._animatedValueY}`);
       console.log(`xxxxx = ${this.state.pan.x._value} yyyyy = ${this.state.pan.y._value}`);
-      console.log(`toValue_x = ${toValue_x} toValue_y = ${toValue_x}`);
+      console.log(`toValue_x = ${toValue_x} toValue_y = ${toValue_y}`);
       
 
       Animated.parallel([
         Animated.timing(this.state.pan.x, {
           toValue: toValue_x,
-          ...commonConfig
+          ...commonConfig2
         }),
         Animated.timing(this.state.pan.y, {
           toValue: toValue_y,
-          ...commonConfig
+          ...commonConfig2
         }),
       ])
       .start(() => {

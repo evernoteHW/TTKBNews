@@ -145,6 +145,7 @@ export default class ChannelManagePage extends Component {
             movePanGesture.setFrameAndIndex(frame_1,replacePanGesture.state.index);
             this.refs.scrollViewSuper.setNativeProps({ scrollEnabled: true })
         },moveBehindPoint.x,moveBehindPoint.y)
+        
         replacePanGesture.startAnimation(-move_length_x,-move_length_y,() => {
             replacePanGesture.setFrameAndIndex(frame_0,movePanGesture.state.index);
             this.refs.scrollViewSuper.setNativeProps({ scrollEnabled: true })
@@ -159,7 +160,7 @@ export default class ChannelManagePage extends Component {
         // console.log(`... x = ${movePanGesture.state.frame.x} y = ${movePanGesture.state.frame.y}`);
         movePanGesture.startAnimation2(0,0,() => {
           this.refs.scrollViewSuper.setNativeProps({ scrollEnabled: false })
-        })
+        },moveBehindPoint.x,moveBehindPoint.y)
       }
   }
 

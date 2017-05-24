@@ -115,44 +115,57 @@ export default class ChannelManagePage extends Component {
   componentDidMount() {
 
   }
-  onPanResponderRelease = (index,moveBehindPoint,callback) => {
-      console.log(index);
-      
-      var count = 0
-      var isInside = false
-      var replaceIndex = index
-      for (var key in this.downScrollViewContainer.props.children){
-          let frame = this.refs[`PanGestureView_${count}`].getFrame()
-          if (count != index) {
+  onPanResponderRelease = (movePanGesture,index,moveBehindPoint,callback) => {
+      //Frame 是
+      // console.log(`x = ${moveBehindPoint.x} y = ${moveBehindPoint.y}`)
+     
+      var replacePanGesture = undefined
+      for (var i = 0; i < this.state.hotChannelData.length; i++) {
+          let pointee = this.refs[`PanGestureView_${i}`]
+          let frame = pointee.getFrame()
+          if (pointee != movePanGesture) {
             if(this.pointInRect(moveBehindPoint,frame)){
-              isInside = true
-              replaceIndex = count
+              replacePanGesture = pointee
             }
           }
-          count ++;
       }
-      //需要更换的index 
-      //遍历 进行替换
-      console.log(isInside);
-      if (isInside) {
-        let frame_0 = this.refs[`PanGestureView_${index}`].getFrame()
-        let frame_1 = this.refs[`PanGestureView_${replaceIndex}`].getFrame()
-        let move_length = frame_1.x - frame_0.x
-        console.log(`move_length == ${move_length}`);
-        this.refs[`PanGestureView_${index}`].startAnimation(move_length,0,() => {
-          this.setState({scroll: true})
+      if (typeof replacePanGesture != 'undefined') {
+        let frame_0 = movePanGesture.getFrame()
+        let frame_1 = replacePanGesture.getFrame()
+
+        // console.log(`frame_0 ${frame_0.x}`);
+        // console.log(`frame_1 ${frame_1.x}`);
+
+        let move_length_x = frame_1.x - frame_0.x
+        let move_length_y = frame_1.y - frame_0.y
+
+        console.log(`move_length_x = ${move_length_x} move_length_y = ${move_length_y}`);
+
+        movePanGesture.startAnimation2(move_length_x,move_length_y,() => {
+            movePanGesture.setFrameAndIndex(frame_1,replacePanGesture.state.index);
+            this.refs.scrollViewSuper.setNativeProps({ scrollEnabled: true })
+        },moveBehindPoint.x,moveBehindPoint.y)
+        replacePanGesture.startAnimation(-move_length_x,-move_length_y,() => {
+            replacePanGesture.setFrameAndIndex(frame_0,movePanGesture.state.index);
+            this.refs.scrollViewSuper.setNativeProps({ scrollEnabled: true })
         })
-        this.refs[`PanGestureView_${replaceIndex}`].startAnimation(-move_length,0,() => {
-          this.setState({scroll: true})
-        })
+      
+        // let frame_0_ = this.refs[`PanGestureView_${index}`].getFrame()
+        // let frame_1_ = this.refs[`PanGestureView_${replaceIndex}`].getFrame()
+
+        // console.log(`222 ==== ${frame_0_.x} ${frame_0_.y}`);
+        // console.log(`222 ==== ${frame_1_.x} ${frame_1_.y}`);
       }else{
-        this.refs[`PanGestureView_${index}`].startAnimation(0,0,() => {
-          this.setState({scroll: true})
+        // console.log(`... x = ${movePanGesture.state.frame.x} y = ${movePanGesture.state.frame.y}`);
+        movePanGesture.startAnimation2(0,0,() => {
+          this.refs.scrollViewSuper.setNativeProps({ scrollEnabled: false })
         })
       }
   }
 
   pointInRect(point,frame){
+    
+    // console.log(`${frame.x} < x < ${frame.x + frame.width}  ${frame.y} < y < ${frame.y + frame.height}`);
 
     if (point.x >= frame.x && 
         point.x <= frame.x + frame.width &&
@@ -163,12 +176,13 @@ export default class ChannelManagePage extends Component {
     return false
   }
   render() {
+    console.log(33333333);
     const { navigate } = this.props.navigation
     let itemData       = this.state.selectedTapIndex == 0 ? this.state.hotChannelData : this.state.cityChannelData
     let bottomBtnText  = this.state.selectedTapIndex == 0 ? '更多频道' : '全部城市'
     return (
       <View style={styles.container}>
-        <ScrollView  style = {styles.scrollView} scrollEnabled = {this.state.scroll}>
+        <ScrollView  ref = 'scrollViewSuper' style = {styles.scrollView} scrollEnabled = {this.state.scroll}>
           <View 
             ref   = {(component) => this.scrollViewContainer = component}
             style = {styles.contentContainer} >
@@ -204,7 +218,11 @@ export default class ChannelManagePage extends Component {
                           index                 = {index}
                           ref                   = {`PanGestureView_${index}`}
                           key                   = {index}
-                          onPanResponderGrant   = {() => this.setState({scroll: false})}
+                          onPanResponderGrant   = {() => {
+                              this.refs.scrollViewSuper.setNativeProps({
+                                scrollEnabled: false  
+                              })
+                          }}
                           onPanResponderRelease = {this.onPanResponderRelease}
                         >
                             <TouchableOpacity 

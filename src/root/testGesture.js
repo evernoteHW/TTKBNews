@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
   },
   square: {
     width: SQUARE_DIMENSIONS,
-    height: 20,
+    height: SQUARE_DIMENSIONS,
     backgroundColor: 'blue'
   },
 });

@@ -133,41 +133,32 @@ export default class ChannelManagePage extends Component {
         let frame_0 = movePanGesture.getFrame()
         let frame_1 = replacePanGesture.getFrame()
 
-        // console.log(`frame_0 ${frame_0.x}`);
-        // console.log(`frame_1 ${frame_1.x}`);
-
         let move_length_x = frame_1.x - frame_0.x
         let move_length_y = frame_1.y - frame_0.y
 
         console.log(`move_length_x = ${move_length_x} move_length_y = ${move_length_y}`);
 
-        movePanGesture.startAnimation2(move_length_x,move_length_y,() => {
+        movePanGesture.startAnimation(move_length_x,move_length_y,() => {
             movePanGesture.setFrameAndIndex(frame_1,replacePanGesture.state.index);
             this.refs.scrollViewSuper.setNativeProps({ scrollEnabled: true })
-        },moveBehindPoint.x,moveBehindPoint.y)
+        })
         
         replacePanGesture.startAnimation(-move_length_x,-move_length_y,() => {
             replacePanGesture.setFrameAndIndex(frame_0,movePanGesture.state.index);
             this.refs.scrollViewSuper.setNativeProps({ scrollEnabled: true })
         })
       
-        // let frame_0_ = this.refs[`PanGestureView_${index}`].getFrame()
-        // let frame_1_ = this.refs[`PanGestureView_${replaceIndex}`].getFrame()
 
-        // console.log(`222 ==== ${frame_0_.x} ${frame_0_.y}`);
-        // console.log(`222 ==== ${frame_1_.x} ${frame_1_.y}`);
       }else{
-        // console.log(`... x = ${movePanGesture.state.frame.x} y = ${movePanGesture.state.frame.y}`);
-        movePanGesture.startAnimation2(0,0,() => {
+
+        movePanGesture.startAnimation(0,0,() => {
           this.refs.scrollViewSuper.setNativeProps({ scrollEnabled: false })
-        },moveBehindPoint.x,moveBehindPoint.y)
+        })
       }
   }
 
   pointInRect(point,frame){
-    
-    // console.log(`${frame.x} < x < ${frame.x + frame.width}  ${frame.y} < y < ${frame.y + frame.height}`);
-
+  
     if (point.x >= frame.x && 
         point.x <= frame.x + frame.width &&
         point.y >= frame.y && 

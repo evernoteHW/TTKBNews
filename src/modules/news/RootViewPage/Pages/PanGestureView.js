@@ -30,15 +30,11 @@ function Rect(x, y, width, height) {
   this.height = height;
 }
 const commonConfig = {
-  duration: 3000,
+  duration: 300,
   // Easing.out(Easing.back()) : Easing.inOut(Easing.quad),
   easing:   Easing.out(Easing.quad)
 }
-const commonConfig2 = {
-  duration: 3000,
-  // Easing.out(Easing.back()) : Easing.inOut(Easing.quad),
-  easing:   Easing.inOut(Easing.quad)
-}
+
 export default class PanGestureView extends Component {
   
   constructor(props) {
@@ -61,15 +57,9 @@ export default class PanGestureView extends Component {
   }
   //平移多少........
   startAnimation(move_dx,move_dy,doneCallBack){
-      //移动距离
-     
-      //设定初始值
-      // this.state.pan.setValue({x:  this.state.old_move_dx, y: this.state.old_move_dy}); //Initial value
 
       let toValue_x = move_dx + this.state.old_move_dx
       let toValue_y = move_dy + this.state.old_move_dy
-      // console.log(`toValue_x = ${toValue_x} toValue_y = ${toValue_x}`);
-      // console.log(`xxxxx = ${this.state.pan.x._value} yyyyy = ${this.state.pan.y._value}`);
 
       Animated.parallel([
         Animated.timing(this.state.pan.x, {
@@ -87,67 +77,13 @@ export default class PanGestureView extends Component {
         doneCallBack()
       });
     
-      this.state.pan.flattenOffset();
   }
-  startAnimation2(move_dx,move_dy,doneCallBack,a,b){
-      //移动距离
-      //中心点....
-     console.log(a,b)
 
-     // console.log(a - this.state.frame.width/2.0,b - this.state.frame.height/2.0);
-      //设定初始值
-      // console.log(this._animatedValueX - this.state.frame.x,this._animatedValueY - this.state.frame.y);
-      // this.state.pan.setValue({x: this._animatedValueX - this.state.frame.x, y: this._animatedValueY - this.state.frame.y}); //Initial value
-      // this.state.pan.setOffset({x: 100, y: 100});
-      this.state.pan.setOffset({x: this._animatedValueX, y: this._animatedValueY});
-      this.state.pan.setValue({x: 91.5, y: 0});
-      // this.state.pan.setOffset({x: this._animatedValueX, y: this._animatedValueY});
-      // this.state.pan.setValue({x: this._animatedValueX, y: this._animatedValueY}); //Initial value
-      // this.state.pan.setValue({x:this._animatedValueX - this.state.frame.width, y: this._animatedValueY - this.state.frame.height}); //Initial value
-      // this.state.pan.setValue({x:this._animatedValueX - 45.5, y: this._animatedValueY}); //Initial value
-      let toValue_x = move_dx + this.state.old_move_dx
-      let toValue_y = move_dy + this.state.old_move_dy
-
-      //不应该。。。卧槽
-      console.log(`this._animatedValueX = ${this._animatedValueX} this._animatedValueY = ${this._animatedValueY}`);
-      console.log(`xxxxx = ${this.state.pan.x._value} yyyyy = ${this.state.pan.y._value}`);
-      console.log(`toValue_x = ${toValue_x} toValue_y = ${toValue_y}`);
-      
-
-      Animated.parallel([
-        Animated.timing(this.state.pan.x, {
-          toValue: toValue_x,
-          ...commonConfig2
-        }),
-        Animated.timing(this.state.pan.y, {
-          toValue: toValue_y,
-          ...commonConfig2
-        }),
-      ])
-      .start(() => {
-        // this.state.pan.setValue({x:  toValue_x, y: toValue_y}); //Initial value
-        this.setState({zIndex: 0,old_move_dx: toValue_x , old_move_dy: toValue_y, needUpdate: true})
-        doneCallBack()
-      });
-    
-      this.state.pan.flattenOffset();
-  }
-  resetAnimation(){
-    Animated.timing(this.state.pan, {
-      toValue: 0
-    }).start(() => {this.setState({zIndex: 0})})
-  }
   componentWillMount() {
       this._animatedValueX = 0;
       this._animatedValueY = 0; 
-      this.state.pan.x.addListener((callback) => {
-        // console.log(`x ...= ${callback.value}`);
-        this._animatedValueX = callback.value
-      });
-      this.state.pan.y.addListener((callback) => {
-        // console.log(`y .... = ${callback.value}`);
-        this._animatedValueY = callback.value
-      });
+      this.state.pan.x.addListener((callback) => { this._animatedValueX = callback.value });
+      this.state.pan.y.addListener((callback) => { this._animatedValueY = callback.value });
 	    this._panResponder = PanResponder.create({
 	      onMoveShouldSetResponderCapture: () => true, //Tell iOS that we are allowing the movement
 	      onMoveShouldSetPanResponderCapture: () => true, // Same here, tell iOS that we allow dragging
@@ -158,34 +94,17 @@ export default class PanGestureView extends Component {
           this.setState({zIndex: 10, needUpdate: true})
 	        this.state.pan.setOffset({x: this._animatedValueX, y: this._animatedValueY});
 	        this.state.pan.setValue({x:  0, y: 0}); //Initial value
-          // console.log(`this._animatedValueX = ${this._animatedValueX} this._animatedValueY = ${this._animatedValueY}`);
 	      },
 	      onPanResponderMove: Animated.event([
 	        null, {dx: this.state.pan.x, dy: this.state.pan.y}
-	      ]), // Creates a function to handle the movement and set offsets
+	      ]), 
 	      onPanResponderRelease: (e, gestureState) => {
-
+          this.state.pan.flattenOffset();
           let x =  this.state.frame.x + this.state.frame.width/2.0 + gestureState.dx
           let y =  this.state.frame.y + this.state.frame.height/2.0 + gestureState.dy
           if (this.props.onPanResponderRelease) {
               this.props.onPanResponderRelease(this,this.state.index,{x,y})
           }
-          // this.state.pan.setValue({x:  0, y: 0}); //Initial value
-          //当前位置 移动
-          // console.log(x,y);
-          // //测试代码
-          //  Animated.parallel([
-          //     Animated.timing(this.state.pan.x, {
-          //       toValue: 100,
-          //       ...commonConfig
-          //     }),
-          //     // Animated.timing(this.state.pan.y, {
-          //     //   toValue: 100,
-          //     //   ...commonConfig
-          //     // }),
-          //   ])
-          // .start(() => {});
-          // this.state.pan.flattenOffset();
 	      },
 	  });
   }

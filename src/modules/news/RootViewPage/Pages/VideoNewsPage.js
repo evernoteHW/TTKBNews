@@ -11,6 +11,7 @@ import {
   Text,
   View,
   FlatList,
+  Geolocation,
 } from 'react-native';
 
 import VideoViewCell from '../Cells/VideoViewCell'
@@ -28,7 +29,12 @@ export default class VideoNewsPage extends Component {
   }
   componentDidMount() {
     // this.loadLocalData()
-    // this.loadNetWorkData()
+    this.loadNetWorkData()
+    // Geolocation.getCurrentPosition(ev =>{
+    //       // alert(ev.coords);//坐标（成功）
+    //   }).then(error =>{
+  
+    //   });
   }
   loadLocalData(){
     var localData = []

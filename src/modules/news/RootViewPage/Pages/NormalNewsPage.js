@@ -29,7 +29,7 @@ export default class NormalNewsPage extends Component {
     // this._onPress.bind(this)
   }
   componentDidMount() {
-    // this.loadLocalData()
+    this.loadLocalData()
     // this.loadNetWorkData()
   }
   loadLocalData(){

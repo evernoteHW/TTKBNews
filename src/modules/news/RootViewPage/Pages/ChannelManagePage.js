@@ -55,7 +55,7 @@ export default class ChannelManagePage extends Component {
    constructor(props) {
     super(props);
     this.state = {
-      itemData:[
+      myChannelData:[
                       {key:'推荐'},
                       {key:'王者荣耀'},
                       {key:'视频'},
@@ -121,12 +121,13 @@ export default class ChannelManagePage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <SingleItemsMap 
-          navigation         = {this.props.navigation}
-          itemData           = {this.state.itemData}
-          // renderItem         = {this.renderItem}
-          // hotChannelData  = {this.state.hotChannelData}
-          // cityChannelData = {this.state.cityChannelData}
+        <ItemsLocationChange 
+          navigation      = {this.props.navigation}
+          // itemData     = {this.state.itemData}
+          myChannelData   = {this.state.myChannelData}
+          renderItem      = {this.renderItem}
+          hotChannelData  = {this.state.hotChannelData}
+          cityChannelData = {this.state.cityChannelData}
         />
       </View>
     );

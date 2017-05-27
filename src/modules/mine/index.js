@@ -14,11 +14,14 @@ import {
   FlatList,
   SectionList,
   Modal,
+  AsyncStorage,
+  DeviceEventEmitter,
 
 } from 'react-native';
 
 import { NavigationActions } from 'react-navigation'
 import Login from '../login'
+import ThemeTopic from '../../common/ThemeTopic'
 
 const navigateAction = NavigationActions.navigate({
   routeName: 'Setting',
@@ -41,6 +44,8 @@ export default class Mine extends Component {
       }
   }
   componentDidMount(){
+    // ThemeTopic.updateTheme()
+
     this.setState({
        listData:     [
               {
@@ -91,9 +96,24 @@ export default class Mine extends Component {
         ],
     })
   }
+  _selectedIndex = (item,index) =>{
+    //更换主题
+    AsyncStorage.getItem('ThemeTopic').then((value) =>{
+      if (value === '88888') {
+        AsyncStorage.setItem('ThemeTopic','99999')
+      }else{
+        AsyncStorage.setItem('ThemeTopic','88888')
+      }
+      DeviceEventEmitter.emit('ThemeChanged');
+    })
+
+  }
   renderItem = ({item, index}) =>{
       return( 
-          <TouchableOpacity style={{backgroundColor: 'white', flexDirection: 'row', height: 50,alignItems: 'center'}}>
+          <TouchableOpacity 
+            style   = {{backgroundColor: 'white', flexDirection: 'row', height: 50,alignItems: 'center'}}
+            onPress = {()=> this._selectedIndex(item,index)}
+          >
             <Image 
               source = {item.url} 
               style  = {{width: 20, height: 20,marginLeft: 10}}

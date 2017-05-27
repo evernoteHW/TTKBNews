@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   Image,
   Modal,
+  DeviceEventEmitter,
 } from 'react-native';
 
 var ScrollableTabView = require('react-native-scrollable-tab-view');
@@ -53,6 +54,8 @@ export default class Attention extends Component {
   }
   componentDidMount(){
     this.loadNetWorkData()
+    //注册通知
+    this.subscription = DeviceEventEmitter.addListener('xxxName', Function);
   }
   loadNetWorkData(){
   

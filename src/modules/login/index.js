@@ -14,6 +14,8 @@ import {
   Dimensions,
   TouchableOpacity,
   TextInput,
+  DeviceEventEmitter,
+  Alert,
 } from 'react-native';
 
 export default class Login extends Component {
@@ -22,7 +24,14 @@ export default class Login extends Component {
     this.state = {
       listData:   [],
       refreshing: false,
+      userName:   '',
+      pwd:        '',
     };
+  }
+
+  componentDidMount(){
+      //注册通知
+     
   }
   _cancel = () => {
     if(this.props.cancel){
@@ -30,9 +39,19 @@ export default class Login extends Component {
     }
   }
   _login = () => {
+   
+    if (!(this.state.userName.length > 0)) {
+      Alert.alert('用户名不能为空')
+      return
+    }
+    if (!(this.state.pwd.length > 0)) {
+      Alert.alert('密码不能为空')
+      return
+    }
     if (this.props.login) {
       this.props.login()
     }
+    DeviceEventEmitter.emit('LoginSuccess',{info:'你成功了'});
   }
   render() {
     return (
@@ -47,13 +66,23 @@ export default class Login extends Component {
         </View>
         <View style = {styles.inputBg}>
           <TextInput 
-            style = {styles.input} 
-            placeholder = {'请输入手机号'}
+            style                 = {styles.input} 
+            placeholder           = {'请输入手机号'}
+            underlineColorAndroid = "transparent"
+            autoFocus             = {true}
+            keyboardType          = {'numeric'}
+            maxLength             = {20}
+            onChangeText          = {(userName) => this.setState({userName})}
+            clearButtonMode       = {'while-editing'}
           />
           <View style = {styles.separator}/>
           <TextInput 
-            style = {styles.input} 
-            placeholder = {'请输入验证码'}
+            style                 = {styles.input} 
+            placeholder           = {'请输入验证码'}
+            underlineColorAndroid = "transparent"
+            autoFocus             = {false}
+            secureTextEntry       = {true}
+            onChangeText          = {(pwd) => this.setState({pwd})}
           />
         </View>
         <TouchableOpacity 
@@ -116,6 +145,7 @@ const styles = StyleSheet.create({
     height:     40,
     color:      '#333333',
     fontSize:   14,
+    padding:    0,
   },
   inputBg:{
     backgroundColor: 'white',

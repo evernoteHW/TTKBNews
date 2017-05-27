@@ -11,6 +11,7 @@ import {
   Text,
   View,
   Image,
+  DeviceEventEmitter,
 } from 'react-native';
 
 import { StackNavigator , TabNavigator} from 'react-navigation';
@@ -123,6 +124,20 @@ const App = StackNavigator({
 });
 
 export default class TTKBNews extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { themeChanged:    false}
+  }
+  componentDidMount(){
+    console.log('componentDidMountcomponentDidMountcomponentDidMountcomponentDidMount')
+    this.notification = DeviceEventEmitter.addListener('ThemeChanged', (parms)=>{
+      console.log('DeviceEventEmitter =====')
+      this.setState({themeChanged: true})
+    });
+  }
+  componentWillUnmount(){
+    this.notification.remove();
+  }
 
   render() {
     return (

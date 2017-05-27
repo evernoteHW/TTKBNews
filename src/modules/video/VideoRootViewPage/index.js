@@ -11,6 +11,7 @@ import {
   Text,
   View,
   FlatList,
+  AsyncStorage,
 } from 'react-native';
 
 import VideoNewsPage from '../../news/RootViewPage/Pages/VideoNewsPage'
@@ -44,10 +45,29 @@ export default class VideoRootViewPage extends Component {
   componentDidMount(){
   }
   render() {
+    var backgroundColor = 'white'
+    //更换主题
+    //Async
+    //  AsyncStorage.getItem('ThemeTopic').then((value) =>{
+    //   if (value === '88888') {
+    //     backgroundColor = 'red'
+    //     console.log(`red......`)
+    //   }else{
+    //     backgroundColor = 'orange'
+    //     console.log(`orange......`)
+    //   }
+    // })
+    //sync
+    try{
+      let backgroundColor = AsyncStorage.getItem('ThemeTopic')
+      console.log(`颜色......${backgroundColor}`)
+    }catch(error){
 
+    }
+    console.log(`index/..........`)
     const { navigation } = this.props;
     return (
-      <View style={styles.container}>
+      <View style={[styles.container,{backgroundColor: backgroundColor}]}>
         <ScrollableTabView 
           tabBarInactiveTextColor = '#2c2c2c'
           tabBarActiveTextColor   = '#d81e06'
